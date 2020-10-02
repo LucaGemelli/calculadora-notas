@@ -1,8 +1,5 @@
 package br.com.pucrs.calculadoranotas.resource;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -13,22 +10,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.pucrs.calculadoranotas.model.AvaliacaoDTO;
-import br.com.pucrs.calculadoranotas.service.AvaliacaoService;
+import br.com.pucrs.calculadoranotas.model.EntradaDTO;
+import br.com.pucrs.calculadoranotas.service.AlunosService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/avaliacao")
-public class AvaliacaoResource {
+@Api(value="API AVALIACAO")
+public class AlunosResource {
 
-	private final AvaliacaoService service;
+	private final AlunosService service;
 
-	public AvaliacaoResource(AvaliacaoService service) {
+	public AlunosResource(AlunosService service) {
 		this.service = service;
 	}
 
 	@PostMapping
-	public ResponseEntity<BigDecimal> save(@Valid @RequestBody List<AvaliacaoDTO> dto) {
-		return new ResponseEntity<>(service.calculaValores(dto), HttpStatus.OK);
+	@ApiOperation(value="Retorna as notas calculada dos alunos.")
+	public ResponseEntity<String> save(@Valid @RequestBody EntradaDTO dto) {
+		return new ResponseEntity<>(service.calculaNotas(dto.getAlunos()), HttpStatus.OK);
 	}
 }
